@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-mongo
+spec:
+  replicas: {{ .Values.mongo.replicas }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: my-mongo
+  template:
+    metadata:
+      labels:
+        app: my-mongo
+    spec:
+      containers:
+        - name: my-mongo
+          image: mongo:6.0.2
+          envFrom:
+            - secretRef:
+                name: my-mongo-secret
